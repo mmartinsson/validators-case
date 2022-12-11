@@ -8,6 +8,7 @@ import validators.rules.SwedishPersonalNumberChecksumRule;
 import validators.rules.ValidationRule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StringValidator {
@@ -36,6 +37,10 @@ public class StringValidator {
     }
 
     public List<String> validate(ValidationRule... rules) {
+        return validate(Arrays.asList(rules));
+    }
+
+    public List<String> validate(List<ValidationRule> rules) {
         List<String> allMessages = new ArrayList<>();
         for (ValidationRule rule : rules) {
             List<String> ruleMessages = rule.validate(value);
