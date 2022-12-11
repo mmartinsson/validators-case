@@ -1,36 +1,41 @@
 package validators;
 
 import validators.checksum.LuhnChecksumCalculator;
+import validators.rules.CharactersRule;
+import validators.rules.ExistsRule;
+import validators.rules.LengthRule;
+import validators.rules.SwedishPersonalNumberChecksumRule;
+import validators.rules.ValidationRule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class StringValidator {
+public class StringValidator {
 
     private static String value;
 
-    static StringValidator given(String value) {
+    public static StringValidator given(String value) {
         StringValidator.value = value;
         return new StringValidator();
     }
 
-    static ExistsRule exists() {
+    public static ExistsRule exists() {
         return new ExistsRule();
     }
 
-    static LengthRule length() {
+    public static LengthRule length() {
         return new LengthRule();
     }
 
-    static CharactersRule chars() {
+    public static CharactersRule chars() {
         return new CharactersRule();
     }
 
-    static SwedishPersonalNumberChecksumRule checksum() {
+    public static SwedishPersonalNumberChecksumRule checksum() {
         return new SwedishPersonalNumberChecksumRule(new LuhnChecksumCalculator());
     }
 
-    List<String> validate(ValidationRule... rules) {
+    public List<String> validate(ValidationRule... rules) {
         List<String> allMessages = new ArrayList<>();
         for (ValidationRule rule : rules) {
             List<String> ruleMessages = rule.validate(value);

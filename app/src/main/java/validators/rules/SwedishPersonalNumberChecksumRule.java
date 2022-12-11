@@ -1,4 +1,4 @@
-package validators;
+package validators.rules;
 
 import validators.checksum.ChecksumCalculator;
 
