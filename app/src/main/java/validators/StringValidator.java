@@ -1,5 +1,7 @@
 package validators;
 
+import validators.checksum.LuhnChecksumCalculator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ class StringValidator {
     }
 
     static SwedishPersonalNumberChecksumRule checksum() {
-        return new SwedishPersonalNumberChecksumRule();
+        return new SwedishPersonalNumberChecksumRule(new LuhnChecksumCalculator());
     }
 
     List<String> validate(ValidationRule... rules) {

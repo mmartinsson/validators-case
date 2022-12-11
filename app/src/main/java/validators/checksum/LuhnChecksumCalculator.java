@@ -1,11 +1,11 @@
-package validators;
+package validators.checksum;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LuhnChecksumCalculator {
+public class LuhnChecksumCalculator implements ChecksumCalculator {
 
-    public static int calculate(long payload) {
+    public int calculate(long payload) {
         List<Integer> digitsFromRight = digitsReversed(payload);
 
         int multiplier = 2;

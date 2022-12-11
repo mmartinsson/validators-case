@@ -1,9 +1,17 @@
 package validators;
 
+import validators.checksum.ChecksumCalculator;
+
 import java.util.Collections;
 import java.util.List;
 
 public class SwedishPersonalNumberChecksumRule extends ValidationRule {
+
+    private final ChecksumCalculator checksumCalculator;
+
+    public SwedishPersonalNumberChecksumRule(ChecksumCalculator checksumCalculator) {
+        this.checksumCalculator = checksumCalculator;
+    }
 
     @Override
     public List<String> validate(String swedishPersonalNumber) {
@@ -11,7 +19,7 @@ public class SwedishPersonalNumberChecksumRule extends ValidationRule {
         if (!swedishPersonalNumber.matches("^(\\d{6}|\\d{8})[-+]\\d{4}?"))
             return List.of("should be formatted correctly");
 
-        int expectedCheckDigit = LuhnChecksumCalculator.calculate(payload(swedishPersonalNumber));
+        int expectedCheckDigit = checksumCalculator.calculate(payload(swedishPersonalNumber));
         if (expectedCheckDigit != checkDigit(swedishPersonalNumber)) return List.of(message);
 
         return Collections.emptyList();
