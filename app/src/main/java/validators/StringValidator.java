@@ -19,7 +19,7 @@ public class StringValidator {
         return new StringValidator();
     }
 
-    public static ExistsRule exists() {
+    public static ValidationRule exists() {
         return new ExistsRule();
     }
 

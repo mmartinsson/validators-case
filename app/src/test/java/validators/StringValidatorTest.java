@@ -1,5 +1,6 @@
 package validators;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -59,5 +60,52 @@ public class StringValidatorTest {
 
         assertEquals(1, messages.size());
         assertTrue(messages.contains("should be at most 13 characters long"));
+    }
+
+    @Nested
+    class PersonalName {
+
+        @Test
+        void shouldFailWhenNull() {
+            List<String> messages = given(null).validate(
+                    exists().onFailBreakWith("should be a non-blank string"),
+                    chars().accept("[0-9-+]*").onFail("should only contain swedish alphabetical characters")
+            );
+
+            assertEquals(1, messages.size());
+            assertTrue(messages.contains("should be a non-blank string"));
+        }
+
+        @Test
+        void shouldFailWhenBlank() {
+            List<String> messages = given("").validate(
+                    exists().onFailBreakWith("should be a non-blank string"),
+                    chars().accept("[0-9-+]*").onFail("should only contain swedish alphabetical characters")
+            );
+
+            assertEquals(1, messages.size());
+            assertTrue(messages.contains("should be a non-blank string"));
+        }
+
+        @Test
+        void shouldFailWhenNotSwedishAlphabeticalCharacters() {
+            List<String> messages = given("ê").validate(
+                    exists().onFailBreakWith("should be a non-blank string"),
+                    chars().accept("[a-zA-ZåäöÅÄÖ]*").onFail("should only contain swedish alphabetical characters")
+            );
+
+            assertEquals(1, messages.size());
+            assertTrue(messages.contains("should only contain swedish alphabetical characters"));
+        }
+
+        @Test
+        void shouldPass() {
+            List<String> messages = given("Åke Ärling Österlind").validate(
+                    exists().onFailBreakWith("should be a non-blank string"),
+                    chars().accept("[a-zA-ZåäöÅÄÖ ]*").onFail("should only contain swedish alphabetical characters")
+            );
+
+            assertEquals(0, messages.size());
+        }
     }
 }
