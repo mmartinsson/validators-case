@@ -15,10 +15,6 @@ public class SwedishPersonalNumberChecksumRule extends ValidationRule {
 
     @Override
     public List<String> validate(String swedishPersonalNumber) {
-        // TODO This feels like a separate validation but this validator is dependent on it. Extract it or not?
-        if (!swedishPersonalNumber.matches("^(\\d{6}|\\d{8})[-+]\\d{4}?"))
-            return List.of("should be formatted correctly");
-
         int expectedCheckDigit = checksumCalculator.calculate(payload(swedishPersonalNumber));
         if (expectedCheckDigit != checkDigit(swedishPersonalNumber)) return List.of(message);
 
