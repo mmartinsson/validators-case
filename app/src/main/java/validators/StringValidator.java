@@ -1,7 +1,8 @@
 package validators;
 
 import validators.checksum.LuhnChecksumCalculator;
-import validators.rules.CharactersRule;
+import validators.rules.CharacterCountRule;
+import validators.rules.AcceptedCharactersRule;
 import validators.rules.ExistsRule;
 import validators.rules.LengthRule;
 import validators.rules.SwedishPersonalNumberChecksumRule;
@@ -28,8 +29,12 @@ public class StringValidator {
         return new LengthRule();
     }
 
-    public static CharactersRule chars() {
-        return new CharactersRule();
+    public static AcceptedCharactersRule acceptedChars() {
+        return new AcceptedCharactersRule();
+    }
+
+    public static CharacterCountRule characterCount() {
+        return new CharacterCountRule();
     }
 
     public static SwedishPersonalNumberChecksumRule checksum() {

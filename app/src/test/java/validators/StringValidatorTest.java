@@ -8,10 +8,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static validators.StringValidator.characterCount;
 import static validators.StringValidator.exists;
 import static validators.StringValidator.given;
 import static validators.StringValidator.length;
-import static validators.StringValidator.chars;
+import static validators.StringValidator.acceptedChars;
 import static validators.StringValidator.checksum;
 
 public class StringValidatorTest {
@@ -23,8 +24,8 @@ public class StringValidatorTest {
             exists().onFailBreakWith("should be a non-blank string"),
             length().max(13).onFailBreakWith("should be at most 13 characters long"),
             length().min(10).onFail("should be at least 10 characters long"),
-            chars().accept("[0-9-+]*").onFail("should only contain, digits, - and +"),
-            chars().count("[0-9]", 10, 12).onFail("should contain 10 or 12 digits"),
+            acceptedChars().accept("[0-9-+]*").onFail("should only contain, digits, - and +"),
+            characterCount().includeChars("[0-9]").acceptedCounts(10, 12).onFail("should contain 10 or 12 digits"),
             checksum().onFail("should have a correct checksum")
         );
 
@@ -54,7 +55,7 @@ public class StringValidatorTest {
 
         private final List<ValidationRule> swedishPersonalName = List.of(
                 exists().onFailBreakWith("should be a non-blank string"),
-                chars().accept("[a-zA-ZåäöÅÄÖ ]*").onFail("should only contain swedish alphabetical characters")
+                acceptedChars().accept("[a-zA-ZåäöÅÄÖ ]*").onFail("should only contain swedish alphabetical characters")
         );
 
         @Test
@@ -95,7 +96,7 @@ public class StringValidatorTest {
         void shouldFailWithMultipleMessages() {
             List<String> messages = given("*").validate(
                     length().min(10).onFail("should be at least 10 characters long"),
-                    chars().accept("[0-9]*").onFail("should only contain digits")
+                    acceptedChars().accept("[0-9]*").onFail("should only contain digits")
             );
 
             assertEquals(2, messages.size());
@@ -107,7 +108,7 @@ public class StringValidatorTest {
         void shouldBreakOnFail() {
             List<String> messages = given("*").validate(
                     length().min(10).onFailBreakWith("should be at least 10 characters long"),
-                    chars().accept("[0-9]*").onFail("should only contain digits")
+                    acceptedChars().accept("[0-9]*").onFail("should only contain digits")
             );
 
             assertEquals(1, messages.size());
